@@ -1,0 +1,198 @@
+/* ============================================================
+   SURVEC — Intro animada premium
+   ============================================================ */
+
+:root {
+  --survec-bg: #080a0d;
+  --survec-gold: #FDB813;
+  --survec-gold-soft: rgba(253, 184, 19, 0.55);
+  --survec-white: #f8f5ee;
+  --survec-white-soft: rgba(248, 245, 238, 0.72);
+}
+
+/* Bloquear scroll durante intro */
+body.is-intro-active {
+  overflow: hidden !important;
+}
+
+/* ——— OVERLAY ——— */
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(253, 184, 19, 0.10), transparent 38%),
+    rgba(8, 10, 13, 0.88);
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: all;
+}
+
+#intro-overlay.is-exiting {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ——— LOGO CONTAINER ——— */
+.intro-logo {
+  position: relative;
+  width: min(52vw, 640px);
+  max-width: calc(100vw - 56px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  transform: translateZ(0);
+}
+
+/* ——— SÍMBOLO (top + bottom juntos) ——— */
+.intro-logo__symbol {
+  position: relative;
+  width: min(20vw, 200px);
+  max-width: 36vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 1.2vw, 14px); /* gap visible entre top y bottom, igual que logo original */
+  margin-bottom: clamp(18px, 3vw, 36px);
+}
+
+.intro-logo__piece {
+  display: block;
+  width: 100%;
+  will-change: transform, opacity, filter;
+  transform-origin: center center;
+  opacity: 0;
+}
+
+.intro-logo__piece--top {
+  width: 75%;
+}
+
+.intro-logo__piece--center {
+  width: 100%;
+  margin-top: -2px; /* unir visualmente las dos piezas */
+}
+
+.intro-logo__piece--wordmark {
+  width: min(46vw, 500px);
+  max-width: 100%;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+  transform-origin: center center;
+}
+
+/* ——— DESCRIPTOR ——— */
+.intro-logo__descriptor {
+  margin-top: clamp(18px, 3vw, 30px);
+  opacity: 0;
+  will-change: opacity, filter;
+}
+
+.intro-logo__descriptor img {
+  width: min(46vw, 480px);
+  max-width: 100%;
+  filter: brightness(0) invert(1);
+  opacity: 0.72;
+}
+
+/* ——— GLINT RADIAL (destellos) ——— */
+.intro-glint {
+  position: fixed;
+  pointer-events: none;
+  width: 180px;
+  height: 180px;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(253, 190, 40, 0.82),
+    rgba(253, 190, 40, 0) 66%
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  filter: blur(12px);
+  transform: translate(-50%, -50%) scale(0.6);
+  z-index: 9001;
+}
+
+/* ——— BOTÓN SALTAR ——— */
+#intro-skip {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 9100;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.28);
+  color: rgba(255, 255, 255, 0.70);
+  border-radius: 999px;
+  padding: 0.65rem 1.1rem;
+  font-family: inherit;
+  font-size: 0.80rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition:
+    background 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease;
+}
+
+#intro-skip:hover {
+  background: rgba(253, 184, 19, 0.14);
+  color: #fff;
+  border-color: rgba(253, 184, 19, 0.42);
+}
+
+/* ——— CONTENIDO DEL SITIO ——— */
+#site-content {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#site-content.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ——— RESPONSIVE ——— */
+@media (max-width: 720px) {
+  .intro-logo {
+    width: min(74vw, 400px);
+  }
+
+  .intro-logo__symbol {
+    width: min(38vw, 160px);
+  }
+
+  .intro-logo__piece--wordmark {
+    width: min(70vw, 380px);
+  }
+
+  .intro-logo__descriptor img {
+    width: min(70vw, 360px);
+  }
+
+  #intro-skip {
+    right: 14px;
+    bottom: 14px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #intro-overlay,
+  #site-content {
+    transition-duration: 1ms !important;
+  }
+}

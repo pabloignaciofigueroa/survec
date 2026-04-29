@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GeoTopografia - Levantamientos con Drone y GNSS en Chile</title>
+  <meta name="description" content="Topografia con drone y control GNSS para ortoimagen, MDT, volumetria y planimetria georreferenciada lista para CAD y GIS.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="intro.css">
+</head>
+<body data-view="home">
+  <!-- ============================================================
+       INTRO OVERLAY SURVEC
+       ============================================================ -->
+  <div id="intro-overlay" aria-label="Intro de marca SURVEC" role="presentation">
+
+    <div class="intro-logo" aria-hidden="true">
+
+      <div class="intro-logo__symbol">
+        <img
+          class="intro-logo__piece intro-logo__piece--top"
+          src="assets/brand/logo-top-v2.png?v=brand-fdb813"
+          alt=""
+          draggable="false"
+        >
+        <img
+          class="intro-logo__piece intro-logo__piece--center"
+          src="assets/brand/logo-bottom-v2.png?v=brand-fdb813"
+          alt=""
+          draggable="false"
+        >
+      </div>
+
+      <img
+        class="intro-logo__piece intro-logo__piece--wordmark"
+        src="assets/brand/logo-texto-white.png?v=brand-fdb813"
+        alt="SURVEC"
+        draggable="false"
+      >
+
+      <div class="intro-logo__descriptor">
+        <img
+          src="assets/brand/logo-descriptor.png?v=brand-fdb813"
+          alt="Geotopografia - Drone - GNSS - Chiloe"
+          draggable="false"
+        >
+      </div>
+
+    </div>
+
+    <button id="intro-skip" type="button">Saltar intro</button>
+
+  </div>
+
+  <div id="site-content">
+  <div id="page-transition" aria-hidden="true">
+    <span class="wipe-bar"></span>
+    <span class="wipe-bar"></span>
+    <span class="wipe-bar"></span>
+    <span class="wipe-bar"></span>
+    <span class="wipe-bar"></span>
+  </div>
+
+  <header class="site-header" id="site-header">
+    <div class="header-inner shell">
+      <a href="#home" class="header-logo" aria-label="SURVEC inicio" data-view-trigger data-view="home">
+        <img src="logos/logotipo.png?v=header-logo-150" alt="SURVEC" class="logo-img">
+      </a>
+
+      <nav class="header-nav" aria-label="Navegacion principal">
+        <button class="nav-link is-active" type="button" data-view-trigger data-view="home">Inicio</button>
+        <button class="nav-link" type="button" data-view-trigger data-view="servicios">Servicios</button>
+        <button class="nav-link" type="button" data-view-trigger data-view="metodo">Metodo</button>
+        <button class="nav-link" type="button" data-view-trigger data-view="proyectos">Proyectos</button>
+        <button class="nav-link nav-link-mobile-quote" type="button" data-view-trigger data-view="contacto">Solicitar Cotizacion</button>
+      </nav>
+
+      <button class="btn btn-yellow header-cta" type="button" data-view-trigger data-view="contacto">Solicitar Cotizacion</button>
+
+      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="single-home" id="home">
+    <canvas id="heroCanvas" aria-hidden="true"></canvas>
+
+    <svg class="topo-bg topo-shell" viewBox="0 0 1440 920" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <path d="M-120,170 C100,100 300,240 540,160 C780,80 1000,210 1260,130 C1400,90 1480,110 1580,90"   fill="none" stroke="rgba(253,184,19,0.08)" stroke-width="1"/>
+      <path d="M-120,220 C120,140 320,290 560,210 C800,130 1030,260 1280,180 C1420,140 1500,160 1580,140" fill="none" stroke="rgba(253,184,19,0.16)" stroke-width="1.6"/>
+      <path d="M-120,320 C180,230 390,390 650,300 C910,210 1120,360 1370,290 C1460,265 1510,265 1580,250" fill="none" stroke="rgba(253,184,19,0.11)" stroke-width="1.3"/>
+      <path d="M-120,420 C200,340 410,460 680,380 C950,300 1150,420 1390,360 C1470,338 1520,330 1580,315" fill="none" stroke="rgba(253,184,19,0.07)" stroke-width="1"/>
+      <path d="M-120,470 C220,380 430,540 700,450 C970,360 1190,510 1430,435 C1490,418 1530,408 1580,395" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+      <path d="M-120,600 C200,520 400,640 680,560 C960,480 1180,600 1420,525 C1490,506 1540,498 1600,480" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.8"/>
+      <path d="M120,760 C310,680 500,780 720,700 C940,620 1160,720 1390,650 C1480,622 1530,620 1600,600"  fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+    </svg>
+
+    <section class="home-stage shell" aria-label="Home variable">
+      <div class="stage-copy">
+        <div class="stage-intro">
+          <span class="kicker reveal">GeoTopografia / Drone / GNSS / Chile</span>
+          <h1 class="stage-title reveal" id="stage-title" data-delay="1">
+            Certeza territorial<br>
+            para proyectar y construir.
+          </h1>
+          <p class="stage-view-note reveal" id="stage-view-note" data-delay="2">
+            No vendemos puntos; entregamos lectura tecnica del terreno para decidir con confianza.
+          </p>
+        </div>
+
+        <div class="stage-actions reveal" data-delay="3">
+          <button class="btn btn-yellow btn-lg" type="button" data-view-trigger data-view="servicios">Explorar servicios</button>
+        </div>
+
+        <ul class="stage-metrics reveal" data-delay="3" aria-label="Metricas clave">
+          <li>
+            <strong>Captura</strong>
+          </li>
+          <li>
+            <strong>Densidad</strong>
+          </li>
+          <li>
+            <strong>GNSS</strong>
+          </li>
+        </ul>
+      </div>
+
+      <div class="view-stage reveal" id="view-stage" data-delay="2" aria-live="polite">
+        <article class="view-card" id="view-card">
+          <noscript>
+            <h2>Activa JavaScript para ver la home variable.</h2>
+          </noscript>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div class="footer-brand">
+        <img src="assets/brand/logo-entero.png?v=brand-fdb813" alt="SURVEC" class="footer-logo" style="height:28px;filter:none;">
+      </div>
+
+      <nav class="footer-nav" aria-label="Navegacion secundaria">
+        <button type="button" data-view-trigger data-view="home">Inicio</button>
+        <button type="button" data-view-trigger data-view="servicios">Servicios</button>
+        <button type="button" data-view-trigger data-view="metodo">Metodo</button>
+        <button type="button" data-view-trigger data-view="proyectos">Proyectos</button>
+        <button type="button" data-view-trigger data-view="contacto">Solicitar Cotizacion</button>
+      </nav>
+
+      <div class="footer-meta">
+        <span class="mono">GeoTopografia / Chile</span>
+        <span class="mono">Operadores DGAC certificados</span>
+      </div>
+    </div>
+  </footer>
+  </div>
+
+  <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <!-- Intro animada SURVEC -->
+  <script src="intro.js"></script>
+  <script src="main.js?v=tonalidad-20260429"></script>
+</body>
+</html>
