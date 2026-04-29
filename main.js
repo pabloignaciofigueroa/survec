@@ -213,7 +213,7 @@ const views = {
   contacto: {
     label: 'Contacto',
     title: 'Cotiza precision para tu terreno.',
-    sidebarTitle: ['Licita con precision', 'desde el terreno.'],
+    sidebarTitle: ['Cotiza con precision', 'desde el terreno.'],
     sidebarText: 'Comparte ubicacion, area y entregables; respondemos con alcance, plazo y formato util.',
     cta: {
       label: 'Inicio',
