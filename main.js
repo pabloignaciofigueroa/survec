@@ -629,10 +629,40 @@ const views = {
     const feedback = document.getElementById('form-feedback');
 
     if (form && feedback) {
-      form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        feedback.textContent = 'Consulta recibida.';
-      });
+      form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(form);
+  const nombre = formData.get('nombre')?.trim();
+  const correo = formData.get('correo')?.trim();
+  const mensaje = formData.get('mensaje')?.trim();
+
+  if (!nombre || !correo || !mensaje) {
+    feedback.textContent = 'Completa nombre, email y proyecto.';
+    return;
+  }
+
+  feedback.textContent = 'Enviando consulta...';
+
+  try {
+    const response = await fetch('/api/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ nombre, correo, mensaje })
+    });
+
+    if (!response.ok) {
+      throw new Error('Error al enviar');
+    }
+
+    form.reset();
+    feedback.textContent = 'Consulta enviada correctamente.';
+  } catch (error) {
+    feedback.textContent = 'No se pudo enviar la consulta. Intenta nuevamente o escribe a contacto@survec.cl.';
+  }
+});
     }
   }
 
