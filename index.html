@@ -4,13 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SURVEC | Topografía con Drone, GNSS y Fotogrametría en Chiloé</title>
-  <link rel="icon" type="image/png" href="assets/brand/logo-entero.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/brand/web/favicon-64.png">
+  <link rel="apple-touch-icon" href="assets/brand/web/apple-touch-icon.png">
+  <meta name="theme-color" content="#080a0d">
   <meta name="description" content="SURVEC realiza levantamientos topográficos con drone, control GNSS, fotogrametría, ortoimagen, MDT, volumetría y planimetría georreferenciada para proyectos en Chiloé y el sur de Chile.">
+  <link rel="canonical" href="https://www.survec.cl/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.survec.cl/">
+  <meta property="og:title" content="SURVEC | Topografía con Drone, GNSS y Fotogrametría en Chiloé">
+  <meta property="og:description" content="Levantamientos topográficos con drone, control GNSS, ortoimagen, MDT y volumetría para proyectos en Chiloé y el sur de Chile.">
+  <meta property="og:image" content="https://www.survec.cl/imagenes/web/og-survec.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="es_CL">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- El logo de la intro va primero: la animacion espera a que este descargado -->
+  <link rel="preload" as="image" fetchpriority="high" href="assets/brand/web/logo-top.webp?v=w1">
+  <link rel="preload" as="image" fetchpriority="high" href="assets/brand/web/logo-bottom.webp?v=w1">
+  <link rel="preload" as="image" fetchpriority="high" href="assets/brand/web/logo-texto.webp?v=w1">
+  <link rel="preload" as="image" fetchpriority="high" href="assets/brand/web/logo-descriptor.webp?v=w1">
+  <!-- La foto del inicio se pide de inmediato, sin esperar al JavaScript -->
+  <link rel="preload" as="image"
+        href="imagenes/web/00-800.webp?v=w1"
+        imagesrcset="imagenes/web/00-480.webp?v=w1 480w, imagenes/web/00-800.webp?v=w1 800w, imagenes/web/00-1200.webp?v=w1 1200w"
+        imagesizes="(max-width: 900px) calc(100vw - 32px), 56vw">
+  <link rel="preload" as="script" href="vendor/gsap-3.12.5.min.js">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="intro.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=w5">
+  <link rel="stylesheet" href="intro.css?v=w1">
 </head>
 <body data-view="home">
   <!-- ============================================================
@@ -23,29 +46,32 @@
       <div class="intro-logo__symbol">
         <img
           class="intro-logo__piece intro-logo__piece--top"
-          src="assets/brand/logo-top-v2.png?v=brand-fdb813"
+          src="assets/brand/web/logo-top.webp?v=w1"
           alt=""
           draggable="false"
+          fetchpriority="high"
         >
         <img
           class="intro-logo__piece intro-logo__piece--center"
-          src="assets/brand/logo-bottom-v2.png?v=brand-fdb813"
+          src="assets/brand/web/logo-bottom.webp?v=w1"
           alt=""
           draggable="false"
+          fetchpriority="high"
         >
       </div>
 
       <img
         class="intro-logo__piece intro-logo__piece--wordmark"
-        src="assets/brand/logo-texto-white.png?v=brand-fdb813"
+        src="assets/brand/web/logo-texto.webp?v=w1"
         alt="SURVEC"
         draggable="false"
+        fetchpriority="high"
       >
 
       <div class="intro-logo__descriptor">
         <img
-          src="assets/brand/logo-descriptor.png?v=brand-fdb813"
-          alt="Geotopografia - Drone - GNSS - Chiloe"
+          src="assets/brand/web/logo-descriptor.webp?v=w1"
+          alt="Geotopografía - Drone - GNSS - Chiloé"
           draggable="false"
         >
       </div>
@@ -68,20 +94,20 @@
   <header class="site-header" id="site-header">
     <div class="header-inner shell">
       <a href="#home" class="header-logo" aria-label="SURVEC inicio" data-view-trigger data-view="home">
-        <img src="logos/logotipo.png?v=header-logo-150" alt="SURVEC" class="logo-img">
+        <img src="logos/web/logotipo.webp?v=w1" alt="SURVEC" class="logo-img" width="260" height="186" fetchpriority="high">
       </a>
 
-      <nav class="header-nav" aria-label="Navegacion principal">
+      <nav class="header-nav" aria-label="Navegación principal">
         <button class="nav-link is-active" type="button" data-view-trigger data-view="home">Inicio</button>
         <button class="nav-link" type="button" data-view-trigger data-view="servicios">Servicios</button>
-        <button class="nav-link" type="button" data-view-trigger data-view="metodo">Metodo</button>
+        <button class="nav-link" type="button" data-view-trigger data-view="metodo">Método</button>
         <button class="nav-link" type="button" data-view-trigger data-view="proyectos">Proyectos</button>
-        <button class="nav-link nav-link-mobile-quote" type="button" data-view-trigger data-view="contacto">Solicitar Cotizacion</button>
+        <button class="nav-link nav-link-mobile-quote" type="button" data-view-trigger data-view="contacto">Solicitar Cotización</button>
       </nav>
 
-      <button class="btn btn-yellow header-cta" type="button" data-view-trigger data-view="contacto">Solicitar Cotizacion</button>
+      <button class="btn btn-yellow header-cta" type="button" data-view-trigger data-view="contacto">Solicitar Cotización</button>
 
-      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+      <button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
@@ -119,7 +145,7 @@
           <button class="btn btn-yellow btn-lg" type="button" data-view-trigger data-view="servicios">Explorar servicios</button>
         </div>
 
-        <ul class="stage-metrics reveal" data-delay="3" aria-label="Metricas clave">
+        <ul class="stage-metrics reveal" data-delay="3" aria-label="Métricas clave">
           <li>
             <strong>Captura</strong>
           </li>
@@ -135,7 +161,7 @@
       <div class="view-stage reveal" id="view-stage" data-delay="2" aria-live="polite">
         <article class="view-card" id="view-card">
           <noscript>
-            <h2>Activa JavaScript para ver la home variable.</h2>
+            <h2>Activa JavaScript para ver el contenido de SURVEC.</h2>
           </noscript>
         </article>
       </div>
@@ -145,29 +171,29 @@
   <footer class="site-footer">
     <div class="shell footer-inner">
       <div class="footer-brand">
-        <img src="assets/brand/logo-entero.png?v=brand-fdb813" alt="SURVEC" class="footer-logo" style="height:28px;filter:none;">
+        <img src="assets/brand/web/logo-entero.webp?v=w1" alt="SURVEC" class="footer-logo" loading="lazy" decoding="async" style="height:28px;filter:none;">
       </div>
 
-      <nav class="footer-nav" aria-label="Navegacion secundaria">
+      <nav class="footer-nav" aria-label="Navegación secundaria">
         <button type="button" data-view-trigger data-view="home">Inicio</button>
         <button type="button" data-view-trigger data-view="servicios">Servicios</button>
-        <button type="button" data-view-trigger data-view="metodo">Metodo</button>
+        <button type="button" data-view-trigger data-view="metodo">Método</button>
         <button type="button" data-view-trigger data-view="proyectos">Proyectos</button>
-        <button type="button" data-view-trigger data-view="contacto">Solicitar Cotizacion</button>
+        <button type="button" data-view-trigger data-view="contacto">Solicitar Cotización</button>
       </nav>
 
       <div class="footer-meta">
-        <span class="mono">GeoTopografia / Chile</span>
+        <span class="mono">GeoTopografía / Chile</span>
         <span class="mono">Operadores DGAC certificados</span>
       </div>
     </div>
   </footer>
   </div>
 
-  <!-- GSAP -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <!-- GSAP alojado en el mismo sitio (sin depender de un CDN externo) -->
+  <script src="vendor/gsap-3.12.5.min.js" defer></script>
   <!-- Intro animada SURVEC -->
-  <script src="intro.js"></script>
-  <script src="main.js?v=tonalidad-20260429"></script>
+  <script src="intro.js?v=w2" defer></script>
+  <script src="main.js?v=w5" defer></script>
 </body>
 </html>
