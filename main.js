@@ -1,5 +1,19 @@
 'use strict';
 
+/* Fotos de las vistas en WebP, en 3 anchos: el navegador baja solo la que necesita
+   segun el ancho de pantalla y la densidad del dispositivo. */
+const IMG_VERSION = 'w1';
+const IMG_SIZES = '(max-width: 900px) calc(100vw - 32px), 56vw';
+const VIEW_IMAGES = { home: '00', servicios: '02', metodo: '07', proyectos: '06', contacto: '04' };
+
+function imgSrcset(n) {
+  return [480, 800, 1200].map((w) => `imagenes/web/${n}-${w}.webp?v=${IMG_VERSION} ${w}w`).join(', ');
+}
+
+function viewImg(n, alt, priority = false) {
+  return `<img src="imagenes/web/${n}-800.webp?v=${IMG_VERSION}" srcset="${imgSrcset(n)}" sizes="${IMG_SIZES}" alt="${alt}" decoding="async"${priority ? ' fetchpriority="high"' : ''} class="view-img">`;
+}
+
 const views = {
   home: {
     label: 'Inicio',
@@ -19,7 +33,7 @@ const views = {
           </div>
 
           <figure class="view-media view-animate" data-stagger="1">
-            <img src="imagenes/00.png?v=tonalidad-20260429" alt="Vista aerea de un levantamiento topografico">
+            ${viewImg('00', 'Vista aerea de un levantamiento topografico', true)}
             <figcaption class="view-caption mono">CAPTURA AEREA / GNSS / ENTREGA 72H</figcaption>
           </figure>
         </div>
@@ -63,7 +77,7 @@ const views = {
           </div>
 
           <figure class="view-media view-animate" data-stagger="1">
-            <img src="imagenes/02.png?v=tonalidad-20260429" alt="Vista aerea de zona levantada con drone">
+            ${viewImg('02', 'Vista aerea de zona levantada con drone')}
             <figcaption class="view-caption mono">ORTOIMAGEN / MDT / ENTREGA LISTA PARA PROYECTO</figcaption>
           </figure>
         </div>
@@ -107,7 +121,7 @@ const views = {
           </div>
 
           <figure class="view-media view-animate" data-stagger="1">
-            <img src="imagenes/07.png?v=tonalidad-20260429" alt="Operacion y planeacion de mision topografica">
+            ${viewImg('07', 'Operacion y planeacion de mision topografica')}
             <figcaption class="view-caption mono">MISION / PROCESO / TRAZABILIDAD</figcaption>
           </figure>
         </div>
@@ -164,7 +178,7 @@ const views = {
           </div>
 
           <figure class="view-media view-animate" data-stagger="1">
-            <img src="imagenes/06.png?v=tonalidad-20260429" alt="Terreno industrial levantado con drone">
+            ${viewImg('06', 'Terreno industrial levantado con drone')}
             <figcaption class="view-caption mono">CASOS REALES / ESCALA / PRECISION</figcaption>
           </figure>
         </div>
@@ -228,7 +242,7 @@ const views = {
           </div>
 
           <figure class="view-media view-animate" data-stagger="1">
-            <img src="imagenes/04.png?v=tonalidad-20260429" alt="Terreno registrado para coordinacion de proyecto">
+            ${viewImg('04', 'Terreno registrado para coordinacion de proyecto')}
             <figcaption class="view-caption mono">RESPUESTA RAPIDA / COBERTURA CHILE</figcaption>
           </figure>
         </div>
@@ -240,15 +254,19 @@ const views = {
             <form id="contact-form" class="form-grid">
               <div class="field">
                 <label for="nombre">Nombre</label>
-                <input id="nombre" name="nombre" type="text" placeholder="Tu nombre">
+                <input id="nombre" name="nombre" type="text" placeholder="Tu nombre" autocomplete="name" maxlength="120" required>
               </div>
               <div class="field">
                 <label for="correo">Email</label>
-                <input id="correo" name="correo" type="email" placeholder="tu@correo.com">
+                <input id="correo" name="correo" type="email" placeholder="tu@correo.com" autocomplete="email" inputmode="email" maxlength="200" required>
               </div>
               <div class="field field-full">
                 <label for="mensaje">Proyecto</label>
-                <textarea id="mensaje" name="mensaje" placeholder="Area, ubicacion, plazo, precision esperada y entregables."></textarea>
+                <textarea id="mensaje" name="mensaje" placeholder="Área, ubicación, plazo, precisión esperada y entregables." maxlength="5000" required></textarea>
+              </div>
+              <div class="field-trap" aria-hidden="true">
+                <label for="empresa_web">No llenar este campo</label>
+                <input id="empresa_web" name="empresa_web" type="text" tabindex="-1" autocomplete="off">
               </div>
               <div class="field field-full">
                 <button class="btn btn-black" type="submit">Enviar consulta</button>
@@ -350,6 +368,21 @@ const views = {
     }
   };
 
+  /* Halo dorado dibujado una sola vez y reutilizado (antes se creaba un degradado
+     nuevo por particula en cada frame). */
+  const glowSprite = (() => {
+    const size = 64;
+    const c = document.createElement('canvas');
+    c.width = c.height = size;
+    const g = c.getContext('2d');
+    const gr = g.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+    gr.addColorStop(0, 'rgba(253,184,19,0.75)');
+    gr.addColorStop(1, 'rgba(253,184,19,0)');
+    g.fillStyle = gr;
+    g.fillRect(0, 0, size, size);
+    return c;
+  })();
+
   class Particle {
     constructor() { this.reset(); }
 
@@ -384,13 +417,10 @@ const views = {
 
     draw() {
       if (this.glow) {
-        const gr = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 5.5);
-        gr.addColorStop(0, `rgba(253,184,19,${this.alpha * 0.75})`);
-        gr.addColorStop(1, 'rgba(253,184,19,0)');
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius * 5.5, 0, Math.PI * 2);
-        ctx.fillStyle = gr;
-        ctx.fill();
+        const r = this.radius * 5.5;
+        ctx.globalAlpha = this.alpha;
+        ctx.drawImage(glowSprite, this.x - r, this.y - r, r * 2, r * 2);
+        ctx.globalAlpha = 1;
       }
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
@@ -461,12 +491,18 @@ const views = {
   }
 
   function drawConnections() {
+    const maxD  = cfg.particle.connectDist;
+    const maxD2 = maxD * maxD;
     for (let i = 0; i < particles.length; i++) {
+      const pi = particles[i];
       for (let j = i + 1; j < particles.length; j++) {
-        const dx   = particles[i].x - particles[j].x;
-        const dy   = particles[i].y - particles[j].y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < cfg.particle.connectDist) {
+        const dx = pi.x - particles[j].x;
+        if (dx > maxD || dx < -maxD) continue;
+        const dy = pi.y - particles[j].y;
+        if (dy > maxD || dy < -maxD) continue;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < maxD2) {
+          const dist = Math.sqrt(d2);
           const a = (1 - dist / cfg.particle.connectDist) * 0.30;
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
@@ -522,13 +558,34 @@ const views = {
     window.requestAnimationFrame(frame);
   }
 
-  window.addEventListener('resize', () => { resize(); seed(); });
-  document.addEventListener('pointermove', (e) => { pointer.x = e.clientX; pointer.y = e.clientY; });
+  /* En celular la barra del navegador cambia el alto al hacer scroll: solo se
+     redistribuyen las particulas si cambia el ancho. */
+  let lastWidth = window.innerWidth;
+  let resizeTimer = 0;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => {
+      resize();
+      if (window.innerWidth !== lastWidth) {
+        lastWidth = window.innerWidth;
+        seed();
+      }
+    }, 150);
+  });
+  document.addEventListener('pointermove', (e) => { pointer.x = e.clientX; pointer.y = e.clientY; }, { passive: true });
   document.addEventListener('pointerleave', () => { pointer.x = -9999; pointer.y = -9999; });
 
-  resize();
-  seed();
-  window.requestAnimationFrame(frame);
+  /* El fondo arranca cuando termina la intro, para no competir con ella. */
+  function start() {
+    resize();
+    seed();
+    window.requestAnimationFrame(frame);
+  }
+  if (window.__survecIntroDone) {
+    start();
+  } else {
+    document.addEventListener('survec:intro-done', start, { once: true });
+  }
 })();
 
 (function initReveal() {
@@ -636,6 +693,8 @@ const views = {
   const nombre = formData.get('nombre')?.trim();
   const correo = formData.get('correo')?.trim();
   const mensaje = formData.get('mensaje')?.trim();
+  const empresa_web = formData.get('empresa_web') || '';
+  const submitButton = form.querySelector('[type="submit"]');
 
   if (!nombre || !correo || !mensaje) {
     feedback.textContent = 'Completa nombre, email y proyecto.';
@@ -643,6 +702,7 @@ const views = {
   }
 
   feedback.textContent = 'Enviando consulta...';
+  if (submitButton) submitButton.disabled = true;
 
   try {
     const response = await fetch('/api/send', {
@@ -650,24 +710,43 @@ const views = {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ nombre, correo, mensaje })
+      body: JSON.stringify({ nombre, correo, mensaje, empresa_web })
     });
 
     if (!response.ok) {
-      throw new Error('Error al enviar');
+      const data = await response.json().catch(() => ({}));
+      throw new Error(response.status === 400 || response.status === 429 ? data.error : '');
     }
 
     form.reset();
     feedback.textContent = 'Consulta enviada correctamente.';
   } catch (error) {
-    feedback.textContent = 'No se pudo enviar la consulta. Intenta nuevamente o escribe a contacto@survec.cl.';
+    feedback.textContent = error.message
+      ? `${error.message}.`
+      : 'No se pudo enviar la consulta. Intenta nuevamente o escribe a contacto@survec.cl.';
+  } finally {
+    if (submitButton) submitButton.disabled = false;
   }
 });
     }
   }
 
+  /* La foto aparece con un fundido cuando termina de bajar, en vez de dibujarse a franjas. */
+  function revealImages() {
+    viewCard.querySelectorAll('img.view-img').forEach((img) => {
+      const done = () => img.classList.add('is-loaded');
+      if (img.complete && img.naturalWidth) {
+        done();
+      } else {
+        img.addEventListener('load', done, { once: true });
+        img.addEventListener('error', done, { once: true });
+      }
+    });
+  }
+
   function hydrateView() {
     bindDynamicContent();
+    revealImages();
     window.requestAnimationFrame(() => {
       viewCard.classList.add('is-ready');
     });
@@ -776,4 +855,28 @@ const views = {
 
   bindTriggers(document);
   renderView(currentView, { skipHash: true, skipFocus: true });
+
+  /* Precarga en segundo plano las fotos de las otras secciones, para que al
+     cambiar de vista ya esten en cache. No se hace con ahorro de datos o red 2G. */
+  function prefetchOtherViews() {
+    const conn = navigator.connection;
+    if (conn && (conn.saveData || /2g/.test(conn.effectiveType || ''))) return;
+    Object.entries(VIEW_IMAGES).forEach(([view, n], i) => {
+      if (view === currentView) return;
+      window.setTimeout(() => {
+        const img = new Image();
+        img.decoding = 'async';
+        img.sizes = IMG_SIZES;
+        img.srcset = imgSrcset(n);
+      }, i * 250);
+    });
+  }
+
+  const idle = window.requestIdleCallback || ((fn) => window.setTimeout(fn, 1200));
+  const startPrefetch = () => idle(prefetchOtherViews, { timeout: 4000 });
+  if (window.__survecIntroDone) {
+    window.addEventListener('load', startPrefetch, { once: true });
+  } else {
+    document.addEventListener('survec:intro-done', startPrefetch, { once: true });
+  }
 })();

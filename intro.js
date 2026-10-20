@@ -15,10 +15,18 @@
   const wordmark    = document.querySelector('.intro-logo__piece--wordmark');
   const descriptor  = document.querySelector('.intro-logo__descriptor');
 
+  /* Avisa al resto del sitio (fondo animado, precarga de fotos) que la intro termino. */
+  function announceDone() {
+    if (window.__survecIntroDone) return;
+    window.__survecIntroDone = true;
+    document.dispatchEvent(new CustomEvent('survec:intro-done'));
+  }
+
   /* Guardia */
   if (!overlay || !siteContent || typeof gsap === 'undefined') {
     if (siteContent) siteContent.classList.add('is-visible');
     if (overlay)     overlay.classList.add('is-exiting');
+    announceDone();
     return;
   }
 
@@ -29,14 +37,20 @@
   const isReload        = navigationEntry
     ? navigationEntry.type === 'reload'
     : performance.navigation && performance.navigation.type === 1;
-  const alreadySeen     = !devMode && !isReload && sessionStorage.getItem('survecIntroSeen') === 'true';
+  let alreadySeen = false;
+  try {
+    alreadySeen = !devMode && !isReload && sessionStorage.getItem('survecIntroSeen') === 'true';
+  } catch (e) { /* modo privado o storage bloqueado */ }
 
   /* ——— Revelar sitio ——— */
   function revealSite() {
     overlay.classList.add('is-exiting');
     siteContent.classList.add('is-visible');
     document.body.classList.remove('is-intro-active');
-    if (!devMode) sessionStorage.setItem('survecIntroSeen', 'true');
+    if (!devMode) {
+      try { sessionStorage.setItem('survecIntroSeen', 'true'); } catch (e) { /* modo privado */ }
+    }
+    announceDone();
     window.setTimeout(function () {
       overlay.setAttribute('hidden', '');
       overlay.style.display = 'none';
