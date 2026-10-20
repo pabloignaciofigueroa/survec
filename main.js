@@ -2,7 +2,7 @@
 
 /* Fotos de las vistas en WebP, en 3 anchos: el navegador baja solo la que necesita
    segun el ancho de pantalla y la densidad del dispositivo. */
-const IMG_VERSION = 'w1';
+const IMG_VERSION = 'w2';
 const IMG_SIZES = '(max-width: 900px) calc(100vw - 32px), 56vw';
 const VIEW_IMAGES = { home: '00', servicios: '02', metodo: '07', proyectos: '06', contacto: '04' };
 
