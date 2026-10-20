@@ -18,8 +18,13 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="es_CL">
   <meta name="twitter:card" content="summary_large_image">
+  <!-- El logo de la intro va primero: la animacion espera a que este descargado -->
+  <link rel="preload" as="image" fetchpriority="high" href="assets/brand/web/logo-top.webp?v=w1">
+  <link rel="preload" as="image" fetchpriority="high" href="assets/brand/web/logo-bottom.webp?v=w1">
+  <link rel="preload" as="image" fetchpriority="high" href="assets/brand/web/logo-texto.webp?v=w1">
+  <link rel="preload" as="image" fetchpriority="high" href="assets/brand/web/logo-descriptor.webp?v=w1">
   <!-- La foto del inicio se pide de inmediato, sin esperar al JavaScript -->
-  <link rel="preload" as="image" fetchpriority="high"
+  <link rel="preload" as="image"
         href="imagenes/web/00-800.webp?v=w1"
         imagesrcset="imagenes/web/00-480.webp?v=w1 480w, imagenes/web/00-800.webp?v=w1 800w, imagenes/web/00-1200.webp?v=w1 1200w"
         imagesizes="(max-width: 900px) calc(100vw - 32px), 56vw">
@@ -44,12 +49,14 @@
           src="assets/brand/web/logo-top.webp?v=w1"
           alt=""
           draggable="false"
+          fetchpriority="high"
         >
         <img
           class="intro-logo__piece intro-logo__piece--center"
           src="assets/brand/web/logo-bottom.webp?v=w1"
           alt=""
           draggable="false"
+          fetchpriority="high"
         >
       </div>
 
@@ -58,12 +65,13 @@
         src="assets/brand/web/logo-texto.webp?v=w1"
         alt="SURVEC"
         draggable="false"
+        fetchpriority="high"
       >
 
       <div class="intro-logo__descriptor">
         <img
           src="assets/brand/web/logo-descriptor.webp?v=w1"
-          alt="Geotopografia - Drone - GNSS - Chiloe"
+          alt="Geotopografía - Drone - GNSS - Chiloé"
           draggable="false"
         >
       </div>
@@ -89,17 +97,17 @@
         <img src="logos/web/logotipo.webp?v=w1" alt="SURVEC" class="logo-img" width="260" height="186" fetchpriority="high">
       </a>
 
-      <nav class="header-nav" aria-label="Navegacion principal">
+      <nav class="header-nav" aria-label="Navegación principal">
         <button class="nav-link is-active" type="button" data-view-trigger data-view="home">Inicio</button>
         <button class="nav-link" type="button" data-view-trigger data-view="servicios">Servicios</button>
-        <button class="nav-link" type="button" data-view-trigger data-view="metodo">Metodo</button>
+        <button class="nav-link" type="button" data-view-trigger data-view="metodo">Método</button>
         <button class="nav-link" type="button" data-view-trigger data-view="proyectos">Proyectos</button>
-        <button class="nav-link nav-link-mobile-quote" type="button" data-view-trigger data-view="contacto">Solicitar Cotizacion</button>
+        <button class="nav-link nav-link-mobile-quote" type="button" data-view-trigger data-view="contacto">Solicitar Cotización</button>
       </nav>
 
-      <button class="btn btn-yellow header-cta" type="button" data-view-trigger data-view="contacto">Solicitar Cotizacion</button>
+      <button class="btn btn-yellow header-cta" type="button" data-view-trigger data-view="contacto">Solicitar Cotización</button>
 
-      <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">
+      <button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
@@ -137,7 +145,7 @@
           <button class="btn btn-yellow btn-lg" type="button" data-view-trigger data-view="servicios">Explorar servicios</button>
         </div>
 
-        <ul class="stage-metrics reveal" data-delay="3" aria-label="Metricas clave">
+        <ul class="stage-metrics reveal" data-delay="3" aria-label="Métricas clave">
           <li>
             <strong>Captura</strong>
           </li>
@@ -153,7 +161,7 @@
       <div class="view-stage reveal" id="view-stage" data-delay="2" aria-live="polite">
         <article class="view-card" id="view-card">
           <noscript>
-            <h2>Activa JavaScript para ver la home variable.</h2>
+            <h2>Activa JavaScript para ver el contenido de SURVEC.</h2>
           </noscript>
         </article>
       </div>
@@ -166,16 +174,16 @@
         <img src="assets/brand/web/logo-entero.webp?v=w1" alt="SURVEC" class="footer-logo" loading="lazy" decoding="async" style="height:28px;filter:none;">
       </div>
 
-      <nav class="footer-nav" aria-label="Navegacion secundaria">
+      <nav class="footer-nav" aria-label="Navegación secundaria">
         <button type="button" data-view-trigger data-view="home">Inicio</button>
         <button type="button" data-view-trigger data-view="servicios">Servicios</button>
-        <button type="button" data-view-trigger data-view="metodo">Metodo</button>
+        <button type="button" data-view-trigger data-view="metodo">Método</button>
         <button type="button" data-view-trigger data-view="proyectos">Proyectos</button>
-        <button type="button" data-view-trigger data-view="contacto">Solicitar Cotizacion</button>
+        <button type="button" data-view-trigger data-view="contacto">Solicitar Cotización</button>
       </nav>
 
       <div class="footer-meta">
-        <span class="mono">GeoTopografia / Chile</span>
+        <span class="mono">GeoTopografía / Chile</span>
         <span class="mono">Operadores DGAC certificados</span>
       </div>
     </div>
@@ -185,7 +193,7 @@
   <!-- GSAP alojado en el mismo sitio (sin depender de un CDN externo) -->
   <script src="vendor/gsap-3.12.5.min.js" defer></script>
   <!-- Intro animada SURVEC -->
-  <script src="intro.js?v=w1" defer></script>
-  <script src="main.js?v=w1" defer></script>
+  <script src="intro.js?v=w2" defer></script>
+  <script src="main.js?v=w2" defer></script>
 </body>
 </html>

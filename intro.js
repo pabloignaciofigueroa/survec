@@ -1,6 +1,6 @@
 /* ============================================================
    SURVEC — Intro animada con GSAP
-   intro.js — v2: tiempos respirados, ~6s total
+   intro.js — v3: espera el logo descargado, ~3,5 s total
    ============================================================ */
 
 (function initSurvecIntro() {
@@ -73,66 +73,98 @@
   gsap.set(wordmark,    { opacity: 0, y: 60, filter: 'blur(6px)' });
   gsap.set(descriptor,  { opacity: 0 });
 
-  /* ——— Timeline principal (~6s) ——— */
+  /* ——— Timeline principal (~3,5 s) ———
+     Se crea en pausa y solo arranca cuando las piezas del logo ya estan
+     descargadas, para que nunca se anime un logo vacio en conexiones lentas. */
   var tl = gsap.timeline({
+    paused: true,
     defaults: { ease: 'power3.out' },
     onComplete: revealSite,
   });
 
-  /* Fase 0 — respiración inicial */
-  tl.to({}, { duration: 0.50 });
+  /* Fase 0 — respiracion inicial */
+  tl.to({}, { duration: 0.20 });
 
-  /* Fase 1 — entrada de piezas (desfase pequeño, no lista escolar) */
+  /* Fase 1 — entrada de piezas */
   tl.to(topPiece, {
     opacity: 1, y: 0, filter: 'blur(0px)',
-    duration: 1.10,
-  }, 0.50);
+    duration: 0.90,
+  }, 0.20);
 
   tl.to(centerPiece, {
     opacity: 1, scale: 1, filter: 'blur(0px)',
-    duration: 1.00,
-  }, 0.66);
+    duration: 0.85,
+  }, 0.32);
 
   tl.to(wordmark, {
     opacity: 1, y: 0, filter: 'blur(0px)',
-    duration: 1.10,
-  }, 0.76);
+    duration: 0.90,
+  }, 0.42);
 
   /* Destellos por pieza */
-  tl.add(function () { triggerGlint(topPiece,    'gold');  }, 1.10);
-  tl.add(function () { triggerGlint(centerPiece, 'gold');  }, 1.26);
-  tl.add(function () { triggerGlint(wordmark,    'white'); }, 1.40);
+  tl.add(function () { triggerGlint(topPiece,    'gold');  }, 0.70);
+  tl.add(function () { triggerGlint(centerPiece, 'gold');  }, 0.82);
+  tl.add(function () { triggerGlint(wordmark,    'white'); }, 0.94);
 
   /* Fase 2 — logo armado, el cliente lo lee */
-  tl.to({}, { duration: 1.60 });
+  tl.to({}, { duration: 0.60 });
 
   /* Fase 3 — descriptor */
   tl.to(descriptor, {
     opacity: 1,
-    duration: 0.85,
+    duration: 0.50,
     ease: 'power2.out',
   });
-  tl.add(function () { triggerDescriptorGlow(); }, '>-0.20');
+  tl.add(function () { triggerDescriptorGlow(); }, '>-0.15');
 
-  /* Fase 4 — sostén final */
-  tl.to({}, { duration: 1.50 });
+  /* Fase 4 — sosten final */
+  tl.to({}, { duration: 0.50 });
 
   /* Fase 5 — fade out overlay + entrada sitio solapados */
   tl.to(overlay, {
     opacity: 0,
-    duration: 1.00,
+    duration: 0.65,
     ease: 'power2.inOut',
   }, '>');
 
   tl.to(siteContent, {
     opacity: 1, y: 0,
-    duration: 1.00,
+    duration: 0.70,
     ease: 'power2.out',
-  }, '<0.15');
+  }, '<0.10');
 
-  /* ——— Botón saltar ——— */
+  /* ——— Esperar el logo ———
+     Arranca cuando las 4 piezas estan listas. Si alguna tarda mas de 4 s
+     (red muy mala), arranca igual para no dejar al visitante esperando. */
+  var started = false;
+  var skipped = false;
+  function startIntro() {
+    if (started || skipped) return;
+    started = true;
+    tl.play();
+  }
+
+  function whenLoaded(img) {
+    if (!img) return Promise.resolve();
+    var ready = img.complete && img.naturalWidth > 0
+      ? Promise.resolve()
+      : new Promise(function (resolve) {
+          img.addEventListener('load', resolve, { once: true });
+          img.addEventListener('error', resolve, { once: true });
+        });
+    return ready.then(function () {
+      return img.decode ? img.decode().catch(function () {}) : undefined;
+    });
+  }
+
+  var descriptorImg = descriptor ? descriptor.querySelector('img') : null;
+  Promise.all([topPiece, centerPiece, wordmark, descriptorImg].map(whenLoaded)).then(startIntro);
+  window.setTimeout(startIntro, 4000);
+
+  /* ——— Boton saltar ——— */
   if (skipBtn) {
     skipBtn.addEventListener('click', function () {
+      skipped = true;
       tl.kill();
       gsap.to(overlay, {
         opacity: 0, duration: 0.45, ease: 'power2.inOut',

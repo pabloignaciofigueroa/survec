@@ -19,7 +19,7 @@ const views = {
     label: 'Inicio',
     title: 'Certeza territorial para decidir.',
     sidebarTitle: ['Certeza territorial', 'para decidir.'],
-    sidebarText: 'No vendemos puntos; entregamos lectura tecnica del terreno para decidir con confianza.',
+    sidebarText: 'No vendemos puntos; entregamos lectura técnica del terreno para decidir con confianza.',
     cta: {
       label: 'Explorar servicios',
       view: 'servicios'
@@ -33,8 +33,8 @@ const views = {
           </div>
 
           <figure class="view-media view-animate" data-stagger="1">
-            ${viewImg('00', 'Vista aerea de un levantamiento topografico', true)}
-            <figcaption class="view-caption mono">CAPTURA AEREA / GNSS / ENTREGA 72H</figcaption>
+            ${viewImg('00', 'Vista aérea de un levantamiento topográfico', true)}
+            <figcaption class="view-caption mono">CAPTURA AÉREA / GNSS / ENTREGA 72H</figcaption>
           </figure>
         </div>
 
@@ -48,7 +48,7 @@ const views = {
             <h3>Nube, MDT y relieve</h3>
           </article>
           <article class="info-card view-animate" data-stagger="2">
-            <span class="mono">Precision verificada</span>
+            <span class="mono">Precisión verificada</span>
             <h3>Control GNSS en terreno</h3>
           </article>
           <article class="info-card view-animate" data-stagger="3">
@@ -62,8 +62,8 @@ const views = {
   servicios: {
     label: 'Servicios',
     title: 'Mediciones listas para proyectar.',
-    sidebarTitle: ['Datos tecnicos', 'listos para proyectar.'],
-    sidebarText: 'Ortoimagen, MDT, curvas y volumetria para pasar del terreno a decisiones claras.',
+    sidebarTitle: ['Datos técnicos', 'listos para proyectar.'],
+    sidebarText: 'Ortoimagen, MDT, curvas y volumetría para pasar del terreno a decisiones claras.',
     cta: {
       label: 'Método',
       view: 'metodo'
@@ -77,7 +77,7 @@ const views = {
           </div>
 
           <figure class="view-media view-animate" data-stagger="1">
-            ${viewImg('02', 'Vista aerea de zona levantada con drone')}
+            ${viewImg('02', 'Vista aérea de zona levantada con drone')}
             <figcaption class="view-caption mono">ORTOIMAGEN / MDT / ENTREGA LISTA PARA PROYECTO</figcaption>
           </figure>
         </div>
@@ -85,10 +85,10 @@ const views = {
         <div class="info-grid">
           <article class="info-card view-animate" data-stagger="1">
             <span class="mono">01 / Levantamiento</span>
-            <h3>Topografia con drone</h3>
+            <h3>Topografía con drone</h3>
           </article>
           <article class="info-card view-animate" data-stagger="2">
-            <span class="mono">02 / Volumetria</span>
+            <span class="mono">02 / Volumetría</span>
             <h3>Corte y relleno</h3>
           </article>
           <article class="info-card view-animate" data-stagger="2">
@@ -104,10 +104,10 @@ const views = {
     `
   },
   metodo: {
-    label: 'Metodo',
+    label: 'Método',
     title: 'Trazabilidad de punta a punta.',
-    sidebarTitle: ['Metodo trazable', 'de punta a punta.'],
-    sidebarText: 'Planificamos, capturamos y validamos con control GNSS para entregar precision util.',
+    sidebarTitle: ['Método trazable', 'de punta a punta.'],
+    sidebarText: 'Planificamos, capturamos y validamos con control GNSS para entregar precisión útil.',
     cta: {
       label: 'Proyectos',
       view: 'proyectos'
@@ -116,13 +116,13 @@ const views = {
       <section class="view-page view-page--method">
         <div class="view-hero">
           <div class="view-copy view-animate">
-            <span class="view-eyebrow mono">Vista 03 / Metodo</span>
+            <span class="view-eyebrow mono">Vista 03 / Método</span>
             <h2 class="view-title" id="view-title">Trazabilidad de punta a punta.</h2>
           </div>
 
           <figure class="view-media view-animate" data-stagger="1">
-            ${viewImg('07', 'Operacion y planeacion de mision topografica')}
-            <figcaption class="view-caption mono">MISION / PROCESO / TRAZABILIDAD</figcaption>
+            ${viewImg('07', 'Operación y planeación de misión topográfica')}
+            <figcaption class="view-caption mono">MISIÓN / PROCESO / TRAZABILIDAD</figcaption>
           </figure>
         </div>
 
@@ -142,13 +142,13 @@ const views = {
           <article class="process-step view-animate" data-stagger="2">
             <span class="process-num mono">03</span>
             <div class="process-body">
-              <h3>Validacion cruzada</h3>
+              <h3>Validación cruzada</h3>
             </div>
           </article>
           <article class="process-step view-animate" data-stagger="3">
             <span class="process-num mono">04</span>
             <div class="process-body">
-              <h3>Entrega util</h3>
+              <h3>Entrega útil</h3>
             </div>
           </article>
         </div>
@@ -166,7 +166,7 @@ const views = {
     sidebarTitle: ['Proyectos medidos', 'a escala real.'],
     sidebarText: 'Obra, loteo, vialidad o predio: ajustamos entregables al uso real de tu equipo.',
     cta: {
-      label: 'Solicitar Cotizacion',
+      label: 'Solicitar Cotización',
       view: 'contacto'
     },
     template: `
@@ -179,25 +179,25 @@ const views = {
 
           <figure class="view-media view-animate" data-stagger="1">
             ${viewImg('06', 'Terreno industrial levantado con drone')}
-            <figcaption class="view-caption mono">CASOS REALES / ESCALA / PRECISION</figcaption>
+            <figcaption class="view-caption mono">CASOS REALES / ESCALA / PRECISIÓN</figcaption>
           </figure>
         </div>
 
         <div class="project-grid">
           <article class="project-card view-animate" data-stagger="1">
             <span class="mono">Constructora</span>
-            <h3>Control y cubicacion</h3>
+            <h3>Control y cubicación</h3>
             <ul class="project-meta">
               <li><span class="mono">Uso</span><strong>obra y movimiento</strong></li>
-              <li><span class="mono">Salida</span><strong>orto + cubicacion</strong></li>
-              <li><span class="mono">Valor</span><strong>decision rapida</strong></li>
+              <li><span class="mono">Salida</span><strong>orto + cubicación</strong></li>
+              <li><span class="mono">Valor</span><strong>decisión rápida</strong></li>
             </ul>
           </article>
           <article class="project-card view-animate" data-stagger="2">
             <span class="mono">Arquitectura</span>
             <h3>Base precisa de sitio</h3>
             <ul class="project-meta">
-              <li><span class="mono">Uso</span><strong>diseno de implantacion</strong></li>
+              <li><span class="mono">Uso</span><strong>diseño de implantación</strong></li>
               <li><span class="mono">Salida</span><strong>MDT + DXF</strong></li>
               <li><span class="mono">Valor</span><strong>lectura real del sitio</strong></li>
             </ul>
@@ -206,13 +206,13 @@ const views = {
             <span class="mono">Forestal / Agro</span>
             <h3>Predios y caminos</h3>
             <ul class="project-meta">
-              <li><span class="mono">Uso</span><strong>gestion territorial</strong></li>
+              <li><span class="mono">Uso</span><strong>gestión territorial</strong></li>
               <li><span class="mono">Salida</span><strong>orto + superficie</strong></li>
               <li><span class="mono">Valor</span><strong>seguimiento claro</strong></li>
             </ul>
           </article>
           <article class="project-card view-animate" data-stagger="3">
-            <span class="mono">Mineria / Municipio</span>
+            <span class="mono">Minería / Municipio</span>
             <h3>Catastro e infraestructura</h3>
             <ul class="project-meta">
               <li><span class="mono">Uso</span><strong>infraestructura</strong></li>
@@ -226,9 +226,9 @@ const views = {
   },
   contacto: {
     label: 'Contacto',
-    title: 'Cotiza precision para tu terreno.',
-    sidebarTitle: ['Cotiza con precision', 'desde el terreno.'],
-    sidebarText: 'Comparte ubicacion, area y entregables; respondemos con alcance, plazo y formato util.',
+    title: 'Cotiza precisión para tu terreno.',
+    sidebarTitle: ['Cotiza con precisión', 'desde el terreno.'],
+    sidebarText: 'Comparte ubicación, área y entregables; respondemos con alcance, plazo y formato útil.',
     cta: {
       label: 'Inicio',
       view: 'home'
@@ -238,12 +238,12 @@ const views = {
         <div class="view-hero">
           <div class="view-copy view-animate">
             <span class="view-eyebrow mono">Vista 05 / Contacto</span>
-            <h2 class="view-title" id="view-title">Cotiza precision para tu terreno.</h2>
+            <h2 class="view-title" id="view-title">Cotiza precisión para tu terreno.</h2>
           </div>
 
           <figure class="view-media view-animate" data-stagger="1">
-            ${viewImg('04', 'Terreno registrado para coordinacion de proyecto')}
-            <figcaption class="view-caption mono">RESPUESTA RAPIDA / COBERTURA CHILE</figcaption>
+            ${viewImg('04', 'Terreno registrado para coordinación de proyecto')}
+            <figcaption class="view-caption mono">RESPUESTA RÁPIDA / COBERTURA CHILE</figcaption>
           </figure>
         </div>
 
@@ -288,7 +288,7 @@ const views = {
                 <strong>AutoCAD, Civil 3D, QGIS, Revit</strong>
               </li>
               <li>
-                <span class="mini-label mono">Aplicacion</span>
+                <span class="mini-label mono">Aplicación</span>
                 <strong>Obra, loteo, vialidad, catastro y faena</strong>
               </li>
             </ul>
