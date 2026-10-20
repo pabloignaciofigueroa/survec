@@ -790,25 +790,20 @@ const views = {
     void overlay.offsetWidth;
     overlay.classList.add('is-entering');
 
+    /* El contenido se cambia cuando las barras ya cubren la pantalla (360 ms + 140 ms
+       de desfase). Sin View Transitions: congelaba la pantalla para tomar una captura
+       que quedaba tapada por las barras igual. */
     window.setTimeout(() => {
-      const commitUpdate = () => {
-        update();
-        overlay.classList.remove('is-entering');
-        void overlay.offsetWidth;
-        overlay.classList.add('is-leaving');
+      update();
+      overlay.classList.remove('is-entering');
+      void overlay.offsetWidth;
+      overlay.classList.add('is-leaving');
 
-        window.setTimeout(() => {
-          overlay.classList.remove('is-leaving');
-          isTransitioning = false;
-        }, 760);
-      };
-
-      if (document.startViewTransition) {
-        document.startViewTransition(commitUpdate);
-      } else {
-        commitUpdate();
-      }
-    }, 320);
+      window.setTimeout(() => {
+        overlay.classList.remove('is-leaving');
+        isTransitioning = false;
+      }, 520);
+    }, 510);
   }
 
   function changeView(view) {
