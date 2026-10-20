@@ -2078,3 +2078,24 @@ body {
 #page-transition .wipe-bar:not(:last-child) {
   margin-right: -1px;
 }
+
+/* ===== FOTO PROTAGONISTA =====
+   El rotulo "Vista 0X / Seccion" y el titulo repetian lo que ya dice la columna
+   izquierda. Se ocultan a la vista (siguen para lectores de pantalla y buscadores)
+   y se quita el degradado oscuro que existia solo para leerlos. */
+.view-copy {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.view-hero::after {
+  content: none;
+}
