@@ -2099,3 +2099,26 @@ body {
 .view-hero::after {
   content: none;
 }
+
+/* ===== TIPOGRAFIA UNIFORME EN LAS TARJETAS =====
+   Todas las secciones usan la misma letra para los titulos de sus tarjetas
+   (antes Proyectos y Contacto salian en serif). La serif queda solo para los
+   titulares grandes de la columna izquierda. */
+.info-card h3,
+.project-card h3,
+.process-body h3,
+.note-card h3,
+.form-panel h3,
+.contact-panel h3 {
+  font-family: var(--font-sans) !important;
+  font-size: 0.84rem !important;
+  font-weight: 600 !important;
+  font-style: normal;
+  letter-spacing: 0 !important;
+  line-height: 1.2 !important;
+}
+
+/* "Lo que podemos cotizar" alineado arriba, como el titulo del formulario */
+.contact-panel {
+  align-content: start;
+}
