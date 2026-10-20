@@ -249,11 +249,11 @@ button {
 .wipe-bar:nth-child(5) { opacity: 0.68; }
 
 #page-transition.is-entering .wipe-bar {
-  animation: wipeIn 0.36s var(--ease-smooth) forwards;
+  animation: wipeIn 0.36s var(--ease-smooth) both;
 }
 
 #page-transition.is-leaving .wipe-bar {
-  animation: wipeOut 0.36s var(--ease-smooth) forwards;
+  animation: wipeOut 0.36s var(--ease-smooth) both;
 }
 
 #page-transition .wipe-bar:nth-child(1) { animation-delay: 0ms; }
@@ -1887,7 +1887,8 @@ body {
   html,
   body {
     height: auto;
-    min-height: 100dvh;
+    min-height: 100vh;
+    min-height: 100svh;
     overflow-x: hidden;
     overflow-y: auto;
   }
@@ -1896,7 +1897,8 @@ body {
     width: 100%;
     max-width: 100vw;
     height: auto;
-    min-height: 100dvh;
+    min-height: 100vh;
+    min-height: 100svh;
     overflow: visible;
   }
 
@@ -1910,7 +1912,8 @@ body {
     width: 100%;
     max-width: 100vw;
     height: auto;
-    min-height: 100dvh;
+    min-height: 100vh;
+    min-height: 100svh;
     padding-top: 92px;
     padding-bottom: 28px;
     align-items: start;
@@ -1991,7 +1994,8 @@ body {
 
   .view-hero {
     flex: none;
-    min-height: min(72dvh, 680px);
+    min-height: min(72vh, 680px);
+    min-height: min(72svh, 680px);
   }
 
   .view-copy {
@@ -2055,4 +2059,22 @@ body {
 .view-card {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+}
+
+/* Barras de transicion opacas, con los mismos tonos que antes daba la transparencia
+   sobre el fondo oscuro: asi el cambio de contenido no se trasluce ("corte"). */
+#page-transition .wipe-bar { opacity: 1 !important; }
+#page-transition .wipe-bar:nth-child(1) { background: #FDB813 !important; }
+#page-transition .wipe-bar:nth-child(2) { background: #EAAB13 !important; }
+#page-transition .wipe-bar:nth-child(3) { background: #D79D13 !important; }
+#page-transition .wipe-bar:nth-child(4) { background: #C49013 !important; }
+#page-transition .wipe-bar:nth-child(5) { background: #B18213 !important; }
+
+#page-transition .wipe-bar {
+  will-change: transform;
+}
+
+/* Sin rendijas entre barras durante la animacion */
+#page-transition .wipe-bar:not(:last-child) {
+  margin-right: -1px;
 }

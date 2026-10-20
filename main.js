@@ -531,9 +531,12 @@ const views = {
     ctx.fill();
   }
 
+  /* Cambiar el tamano de un canvas lo borra: solo se hace si de verdad cambio. */
   function resize() {
-    canvas.width  = window.innerWidth;
-    canvas.height = stage.offsetHeight;
+    const w = window.innerWidth;
+    const h = stage.offsetHeight;
+    if (canvas.width !== w) canvas.width = w;
+    if (canvas.height !== h) canvas.height = h;
   }
 
   function seed() {
@@ -542,8 +545,30 @@ const views = {
     for (let i = 0; i < n; i++) particles.push(new Particle());
   }
 
+  /* En pantallas tactiles el fondo se congela mientras se hace scroll: redibujar
+     un canvas del alto de toda la pagina compite con el scroll y lo hace tironear. */
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+  let scrolling = false;
+  let scrollTimer = 0;
+  if (isTouch) {
+    window.addEventListener('scroll', () => {
+      scrolling = true;
+      window.clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(() => { scrolling = false; }, 180);
+    }, { passive: true });
+  }
+
+  /* Durante el cambio de seccion las barras tapan todo: no tiene sentido dibujar. */
+  const wipeOverlay = document.getElementById('page-transition');
+  const isWiping = () => !!wipeOverlay && (wipeOverlay.classList.contains('is-entering') || wipeOverlay.classList.contains('is-leaving'));
+
   function frame(ts) {
-    const delta = lastTs ? ts - lastTs : 16;
+    if (scrolling || isWiping()) {
+      lastTs = ts;
+      window.requestAnimationFrame(frame);
+      return;
+    }
+    const delta = lastTs ? Math.min(ts - lastTs, 50) : 16;
     lastTs = ts;
     time  += delta;
     const base = Math.min(canvas.width, canvas.height);
@@ -734,7 +759,12 @@ const views = {
   /* La foto aparece con un fundido cuando termina de bajar, en vez de dibujarse a franjas. */
   function revealImages() {
     viewCard.querySelectorAll('img.view-img').forEach((img) => {
-      const done = () => img.classList.add('is-loaded');
+      const t0 = performance.now();
+      const done = () => {
+        // Si llego al instante (precarga), se muestra sin fundido.
+        if (performance.now() - t0 < 200) img.style.transition = 'none';
+        img.classList.add('is-loaded');
+      };
       if (img.complete && img.naturalWidth) {
         done();
       } else {
@@ -744,9 +774,12 @@ const views = {
     });
   }
 
-  function hydrateView() {
+  function hydrateView(deferReveal) {
     bindDynamicContent();
     revealImages();
+    // En un cambio de seccion la entrada se lanza cuando las barras empiezan a
+    // retirarse (playTransition); si no, se veria solo el final de la animacion.
+    if (deferReveal) return;
     window.requestAnimationFrame(() => {
       viewCard.classList.add('is-ready');
     });
@@ -765,7 +798,7 @@ const views = {
     viewCard.innerHTML = content.template;
     markActiveControls(nextView);
     bindTriggers();
-    hydrateView();
+    hydrateView(options.deferReveal);
 
     if (!options.skipHash) {
       window.history.replaceState(null, '', `#${nextView}`);
@@ -780,9 +813,28 @@ const views = {
     }
   }
 
-  function playTransition(update) {
+  /* Descarga y decodifica la foto de la vista siguiente mientras las barras cubren
+     la pantalla, para que al destaparse ya este lista (sin hueco negro ni salto). */
+  function prepareImage(view) {
+    const n = VIEW_IMAGES[view];
+    if (!n) return Promise.resolve();
+    const img = new Image();
+    img.sizes = IMG_SIZES;
+    img.srcset = imgSrcset(n);
+    if (!img.decode) return Promise.resolve();
+    return img.decode().catch(() => {});
+  }
+
+  const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
+  const nextFrames = () => new Promise((resolve) => {
+    window.requestAnimationFrame(() => window.requestAnimationFrame(resolve));
+  });
+
+  function playTransition(update, view) {
     if (prefersReducedMotion.matches) {
       update();
+      viewCard.classList.add('is-ready');
+      isTransitioning = false;
       return;
     }
 
@@ -791,19 +843,37 @@ const views = {
     overlay.classList.add('is-entering');
 
     /* El contenido se cambia cuando las barras ya cubren la pantalla (360 ms + 140 ms
-       de desfase). Sin View Transitions: congelaba la pantalla para tomar una captura
-       que quedaba tapada por las barras igual. */
-    window.setTimeout(() => {
-      update();
-      overlay.classList.remove('is-entering');
-      void overlay.offsetWidth;
-      overlay.classList.add('is-leaving');
+       de desfase) y la foto nueva esta decodificada (maximo 1,2 s de espera extra).
+       Sin View Transitions: congelaba la pantalla para tomar una captura que quedaba
+       tapada por las barras igual. */
+    const covered = wait(510);
+    const imageReady = Promise.race([prepareImage(view), wait(1200)]);
 
-      window.setTimeout(() => {
+    Promise.all([covered, imageReady])
+      .then(() => {
+        update();
+        // Antes de destapar: que la foto nueva este puesta (llega desde cache) y que
+        // pase el cuadro pesado del cambio, asi la salida no arranca con un tiron.
+        const img = viewCard.querySelector('img.view-img');
+        const shown = img && !img.classList.contains('is-loaded')
+          ? new Promise((resolve) => {
+              img.addEventListener('load', resolve, { once: true });
+              img.addEventListener('error', resolve, { once: true });
+            })
+          : Promise.resolve();
+        return Promise.race([shown, wait(400)]).then(nextFrames);
+      })
+      .then(() => {
+        overlay.classList.remove('is-entering');
+        void overlay.offsetWidth;
+        overlay.classList.add('is-leaving');
+        viewCard.classList.add('is-ready');
+        return wait(520);
+      })
+      .then(() => {
         overlay.classList.remove('is-leaving');
         isTransitioning = false;
-      }, 520);
-    }, 510);
+      });
   }
 
   function changeView(view) {
@@ -815,7 +885,11 @@ const views = {
 
     closeMobileMenu();
     isTransitioning = true;
-    playTransition(() => renderView(nextView));
+    playTransition(() => {
+      renderView(nextView, { deferReveal: true });
+      // En celular la pagina es larga: la vista nueva empieza arriba (ocurre tapado).
+      if (window.scrollY > 0) window.scrollTo({ top: 0, behavior: 'instant' });
+    }, nextView);
   }
 
   function bindTriggers(root = document) {
